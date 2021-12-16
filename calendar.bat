@@ -4,6 +4,33 @@ setlocal enabledelayedexpansion
 for /f "skip=1 delims=." %%d in ('wmic os get LocalDateTime ^| findstr .') do set "timestamp=%%d"
 
 
+
+rem DISPAY NAME OF MOUTH 
+set mouth[1]=JANUAR
+set mouth[2]=FEBRUAR 
+set mouth[3]=MARCH 
+set mouth[4]=APRIL 
+set mouth[5]=MAY 
+set mouth[6]=JUNE 
+set mouth[7]=JULY 
+set mouth[8]=AUGUST
+set mouth[9]=SEPTEMBER 
+set mouth[10]=OCTOBER 
+set mouth[11]=NOVEMBER 
+set mouth[12]=DECEMBER
+
+set /a c=0
+set /a d=%timestamp:~4,2%
+
+for %%a in (%mouth%) do ( 
+	set /a c+=1
+	if !c! EQU !d! (
+		echo %%a
+	)
+)
+
+
+
 echo [43;37mMo      Tu      We      Th      Fr      Sa      Su[40;37m
 
 set /a today =%timestamp:~6,2%
