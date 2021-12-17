@@ -6,29 +6,29 @@ for /f "skip=1 delims=." %%d in ('wmic os get LocalDateTime ^| findstr .') do se
 
 
 rem DISPAY NAME OF MOUTH 
-set mouth[1]=JANUAR
-set mouth[2]=FEBRUAR 
-set mouth[3]=MARCH 
-set mouth[4]=APRIL 
-set mouth[5]=MAY 
-set mouth[6]=JUNE 
-set mouth[7]=JULY 
-set mouth[8]=AUGUST
-set mouth[9]=SEPTEMBER 
-set mouth[10]=OCTOBER 
-set mouth[11]=NOVEMBER 
-set mouth[12]=DECEMBER
+set mouth=JANUAR
+set mouth=%mouth%;FEBRUAR 
+set mouth=%mouth%;MARCH 
+set mouth=%mouth%;APRIL 
+set mouth=%mouth%;MAY 
+set mouth=%mouth%;JUNE 
+set mouth=%mouth%;JULY 
+set mouth=%mouth%;AUGUST
+set mouth=%mouth%;SEPTEMBER 
+set mouth=%mouth%;OCTOBER 
+set mouth=%mouth%;NOVEMBER 
+set mouth=%mouth%;DECEMBER
 
 set /a c=0
 set /a d=%timestamp:~4,2%
 
 for %%a in (%mouth%) do ( 
 	set /a c+=1
+	
 	if !c! EQU !d! (
 		echo %%a
 	)
 )
-
 
 
 echo [43;37mMo      Tu      We      Th      Fr      Sa      Su[40;37m
@@ -73,14 +73,13 @@ call :DaysOfMonth %timestamp:~0,4% %timestamp:~4,2%
 
 
 rem echo HERE I WILL CODE THE CALLENDAT PLUS THE DAYS IN MOUNT 
+rem echo saasa[41;37m%up%
+rem echo ssss[41;37m%errorlevel%
 
 for /l %%i in (1,1,%errorlevel%) do ( 
 
 	set /a pos=%%i 
 	set /a pos+=%up%
-	set /a pos1=%%i+%up%
-	rem echo t !pos!
-	rem echo POS !pos1!
 	set /a pos%%=7
 
 
@@ -88,13 +87,12 @@ for /l %%i in (1,1,%errorlevel%) do (
 	if !pos! EQU 0 (
 		
 		if %timestamp:~6,2% EQU %%i (
-			echo | set /p dummyName= [43;37m%%i[40;37m       
-			echo %%i
+			echo [43;37m%%i[40;37m     
+			rem echo | set /p dummyName= [43;37m%%i[40;37m      
 		) ELSE ( 
 			echo %%i
 		)
-	) ELSE (
-		rem echo | set /p dummyName= %%i 	
+	) ELSE (	
 		if %timestamp:~6,2% EQU %%i (	
 			echo | set /p dummyName= [43;37m%%i[40;37m       
 		) ELSE ( 
