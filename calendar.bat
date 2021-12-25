@@ -2,6 +2,9 @@
 setlocal enabledelayedexpansion
 
 for /f "skip=1 delims=." %%d in ('wmic os get LocalDateTime ^| findstr .') do set "timestamp=%%d"
+for /f "skip=1 delims=." %%a in ('wmic path win32_localtime get dayofweek ^| findstr .') do set "currentday=%%a"
+
+
 
 
 
@@ -19,6 +22,14 @@ set mouth=%mouth%;OCTOBER
 set mouth=%mouth%;NOVEMBER 
 set mouth=%mouth%;DECEMBER
 
+
+
+for /F "tokens=1-4 delims=/ " %%i in ('date /t') do (
+set WD=%%i
+) 
+rem set day name
+
+
 set /a c=0
 set /a d=%timestamp:~4,2%
 
@@ -29,7 +40,7 @@ for %%a in (%mouth%) do (
 		echo %%a
 	)
 )
-
+set /a c=7
 
 echo [43;37mMo      Tu      We      Th      Fr      Sa      Su[40;37m
 
@@ -40,10 +51,19 @@ IF %today% GTR 7 ( set /a today-=7)
 IF %today% GTR 7 ( set /a today-=7)
 IF %today% GTR 7 ( set /a today-=7)
 
+
+for /l %%i in (1,1,!today!) do (
+	set /a currentday-=1
+	if !currentday! LSS 0 (
+		set /a currentday=6
+	)
+)
+
+
 set /a mouthbefore = %timestamp:~4,2%
 set /a yearbefore = %timestamp:~0,4%
 
-rem IF THE MOUNTH IS SOMETHNIG LIKE xx-01-xx
+rem IF THE MONTH IS SOMETHNIG LIKE xx-01-xx
 rem THE YEAR MUST BE LAST YEAR
 if %mouthbefore% EQU 1 (
 	set /a mouthbefore = 12	
@@ -58,12 +78,12 @@ call :DaysOfMonth %yearbefore% %mouthbefore%
 
 
 set /a up= 0
-for /l %%i in (0,1,!today!) do ( 
+
+rem OUTPUT THE DAYS OF LAST MONTH
+for /l %%i in (1,1,!currentday!) do ( 
 	set /a outday = %errorlevel%
-	set /a mini =  %today%
-	set /a mini-=%%i
-	set /a outday-=!mini!
-	rem -(today-i)
+	set /a outday-=!currentday!
+	set /a outday+=%%i
 	echo | set /p dummyName= [41;37m!outday![40;37m       
 	rem echo | set /p dummyName=!outday!
 	set /a up+=1
@@ -72,9 +92,8 @@ for /l %%i in (0,1,!today!) do (
 call :DaysOfMonth %timestamp:~0,4% %timestamp:~4,2%
 
 
-rem echo HERE I WILL CODE THE CALLENDAT PLUS THE DAYS IN MOUNT 
-rem echo saasa[41;37m%up%
-rem echo ssss[41;37m%errorlevel%
+rem echo HERE I WILL CODE THE CALLENDAT PLUS THE DAYS IN MONTH 
+
 
 for /l %%i in (1,1,%errorlevel%) do ( 
 
