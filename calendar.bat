@@ -8,7 +8,7 @@ for /f "skip=1 delims=." %%a in ('wmic path win32_localtime get dayofweek ^| fin
 
 
 
-rem DISPAY NAME OF MOUTH 
+::ARRAY OF MOUTHS-----------------------
 set mouth=JANUAR
 set mouth=%mouth%;FEBRUAR 
 set mouth=%mouth%;MARCH 
@@ -21,7 +21,7 @@ set mouth=%mouth%;SEPTEMBER
 set mouth=%mouth%;OCTOBER 
 set mouth=%mouth%;NOVEMBER 
 set mouth=%mouth%;DECEMBER
-
+::--------------------------------------
 
 
 for /F "tokens=1-4 delims=/ " %%i in ('date /t') do (
@@ -33,6 +33,8 @@ rem set day name
 set /a c=0
 set /a d=%timestamp:~4,2%
 
+
+::DISPLAING THE CURRENT MOUTH NAME
 for %%a in (%mouth%) do ( 
 	set /a c+=1
 	
@@ -40,17 +42,27 @@ for %%a in (%mouth%) do (
 		echo %%a
 	)
 )
-set /a c=7
 
+
+::DISPLAYING DAYS OF WEEK
 echo [43;37mMo      Tu      We      Th      Fr      Sa      Su[40;37m
 
-set /a today =%timestamp:~6,2%
-IF %today% GTR 7 ( set /a today-=7)
-IF %today% GTR 7 ( set /a today-=7)
-IF %today% GTR 7 ( set /a today-=7)
-IF %today% GTR 7 ( set /a today-=7)
-IF %today% GTR 7 ( set /a today-=7)
 
+@Echo off
+set /a today =%timestamp:~6,2% >nul 2>&1 && (
+  set /a today =%timestamp:~6,2%
+) || (
+set /a today =%timestamp:~7,1%
+  echo a
+)
+
+::DO THE SUBSTRUCTION BY 7 FOR THE DAY. YOU NEED TO DO IT MULTIPLE TIMES BECAUSE YOU WANT TO HAVE THE LOVEST POSIBLE DAY Mon 8  -7  -> Mon 1 
+IF %today% GTR 7 ( set /a today-=7)
+IF %today% GTR 7 ( set /a today-=7)
+IF %today% GTR 7 ( set /a today-=7)
+IF %today% GTR 7 ( set /a today-=7)
+IF %today% GTR 7 ( set /a today-=7)
+::END OF THE SUBSTRUCTION
 
 for /l %%i in (1,1,!today!) do (
 	set /a currentday-=1
@@ -85,7 +97,6 @@ for /l %%i in (1,1,!currentday!) do (
 	set /a outday-=!currentday!
 	set /a outday+=%%i
 	echo | set /p dummyName= [41;37m!outday![40;37m       
-	rem echo | set /p dummyName=!outday!
 	set /a up+=1
 )
 
@@ -93,8 +104,6 @@ call :DaysOfMonth %timestamp:~0,4% %timestamp:~4,2%
 
 
 rem echo HERE I WILL CODE THE CALLENDAT PLUS THE DAYS IN MONTH 
-
-
 for /l %%i in (1,1,%errorlevel%) do ( 
 
 	set /a pos=%%i 
