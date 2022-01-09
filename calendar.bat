@@ -133,8 +133,8 @@ for /l %%i in (1,1,%errorlevel%) do (
 
 
 
-
-
+echo.
+pause
 goto :eof
 
 :DaysOfMonth Year Month
