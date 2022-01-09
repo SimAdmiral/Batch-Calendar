@@ -50,10 +50,10 @@ echo [43;37mMo      Tu      We      Th      Fr      Sa      Su[40;37m
 
 @Echo off
 set /a today =%timestamp:~6,2% >nul 2>&1 && (
-  set /a today =%timestamp:~6,2%
+set /a thisday =%timestamp:~6,2%
 ) || (
 set /a today =%timestamp:~7,1%
-  echo a
+set /a thisday =%timestamp:~7,1%
 )
 
 ::DO THE SUBSTRUCTION BY 7 FOR THE DAY. YOU NEED TO DO IT MULTIPLE TIMES BECAUSE YOU WANT TO HAVE THE LOVEST POSIBLE DAY Mon 8  -7  -> Mon 1 
@@ -104,6 +104,7 @@ call :DaysOfMonth %timestamp:~0,4% %timestamp:~4,2%
 
 
 rem echo HERE I WILL CODE THE CALLENDAT PLUS THE DAYS IN MONTH 
+
 for /l %%i in (1,1,%errorlevel%) do ( 
 
 	set /a pos=%%i 
@@ -114,15 +115,15 @@ for /l %%i in (1,1,%errorlevel%) do (
 	
 	if !pos! EQU 0 (
 		
-		if %timestamp:~6,2% EQU %%i (
-			echo [43;37m%%i[40;37m     
+		if %thisday% EQU %%i ( ::IF IT'S CURRENT DAY
+			echo [42;37m%%i[40;37m     
 			rem echo | set /p dummyName= [43;37m%%i[40;37m      
 		) ELSE ( 
 			echo %%i
 		)
 	) ELSE (	
-		if %timestamp:~6,2% EQU %%i (	
-			echo | set /p dummyName= [43;37m%%i[40;37m       
+		if %thisday% EQU %%i (	::IF IT'S CURRENT DAY
+			echo | set /p dummyName= [42;37m%%i[40;37m      
 		) ELSE ( 
 			echo | set /p dummyName= %%i 	
 		)
