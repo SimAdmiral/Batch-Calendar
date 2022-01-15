@@ -132,6 +132,15 @@ for /l %%i in (1,1,%errorlevel%) do (
 )
 
 
+rem PRINTITN THE FIRST DAYS OF NEXT MOUTHS
+
+set /a pos=7-%pos%
+
+for /l %%i in (1,1,!pos!) do ( 
+	echo | set /p dummyName= [41;37m%%i[40;37m        
+)
+
+
 
 echo.
 pause
